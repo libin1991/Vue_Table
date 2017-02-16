@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>汇流箱信号</title>
+    <link rel="stylesheet" href="./vuecomBox/style.css">
+    <!-- Delete ".min" for console warnings in development -->
+    <script src="./vuecomBox/vue.min.js"></script>
+</head>
+<body>
+
+    <!-- component template -->
+    <script type="text/x-template" id="grid-template">
+        <table v-if="filteredData.length">
+            <thead>
+                <tr>
+                    <th v-for="(key,index) in columns"
+                        @click="sortBy(key)"
+                        :class="{ active: sortKey == key,class0:index==0,class1:index==1,class2:index==2,class3:index==3,class4:index>3 }">
+                        {{ key | capitalize }}
+                        <span class="arrow" class="sortOrders[key] > 0 ? 'asc' : 'dsc'">
+                        </span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(entry,index) in filteredData" :class="{classa:index%2!=0}" @click="trclick(index)">
+                    <td v-for="(key,index1) in columns" :class="{classb:index1==0}">
+                        <svg width="15" height="15" v-if="key.indexOf('state')>=0">
+                            <circle cx="7.5" cy="7.5" r="5" :class="{classc:entry[key]==1}"></circle>
+                        </svg>
+                        <div v-else>
+                            {{entry[key]}}
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <p v-else>No matches found.</p>
+    </script>
+    <div id="demo">
+        <form id="search">
+            汇流箱监测信号 <input name="query" v-model="searchQuery">
+        </form>
+        <demo-grid :data="gridData"
+                   :columns="gridColumns"
+                   :filter-key="searchQuery">
+        </demo-grid>
+    </div>
+    <script src="./vuecomBox/grid.js"></script>
+</body>
+</html>
